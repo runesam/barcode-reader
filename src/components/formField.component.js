@@ -16,6 +16,7 @@ const FormFieldComponent = (props) => {
 		field: {
 			type,
 			name,
+			editable,
 			validators,
 			placeholder,
 		},
@@ -24,6 +25,7 @@ const FormFieldComponent = (props) => {
 	return (
 		<Field
 			type={type}
+			editable={editable}
 			validate={validators}
 			placeholder={placeholder}
 			name={getName(name, parent)}

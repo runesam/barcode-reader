@@ -46,6 +46,7 @@ class TextFieldComponent extends PureComponent {
         const {
             type,
             input,
+            editable,
             placeholder,
             meta: { touched, error },
             ...custom
@@ -56,12 +57,13 @@ class TextFieldComponent extends PureComponent {
                 <View style={{ ...style.view, ...style[focused ? 'focused' : null] }} />
                 <TextInput
                     {...custom}
-                    selectionColor={colors.fresh}
+                    editable={editable}
                     value={input.value}
                     onBlur={this.onBlur}
                     onFocus={this.onFocus}
                     style={style.textInput}
                     placeholder={placeholder}
+                    selectionColor={colors.fresh}
                     onChangeText={input.onChange}
                     placeholderTextColor={colors.frost}
                     secureTextEntry={type === 'password'}

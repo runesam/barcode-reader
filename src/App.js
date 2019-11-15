@@ -1,35 +1,45 @@
-import { Provider } from 'react-redux';
+import propTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Text, StatusBar } from 'react-native';
+import { connect, Provider } from 'react-redux';
 import AsyncStorage from '@react-native-community/async-storage'
 
 import Main from './main';
 import Login from './login';
+import BarcodeScanner from './barcodeScanner';
 import store from './redux/store';
+import { updatePageState } from './redux/actions';
 
 class App extends Component {
     static propTypes = {
-
+        page: propTypes.string,
+        updatePageState: propTypes.func.isRequired,
     };
 
-    state = {
-        loading: true,
-        componentToRender: Login,
-    };
+    static defaultProps = { page: null };
 
     constructor(props) {
         super(props);
-        this.retrieveAuthToken()
-            .then();
+        const { page } = props;
+        if (!page) {
+            this.retrieveAuthToken().then();
+        }
+
+        this.pages = {
+            Main,
+            Login,
+            BarcodeScanner,
+        }
     }
 
     retrieveAuthToken = async () => {
+        const { updatePageState: updatePageStateAction } = this.props;
         try {
             const value = await AsyncStorage.getItem('authToken');
-            if (value) {
-                this.setState({ loading: false, componentToRender: Main });
+            if (!value) {
+                updatePageStateAction('Main');
             } else {
-                this.setState({ loading: false });
+                updatePageStateAction('Login');
             }
         } catch (error) {
             // Error retrieving data
@@ -37,21 +47,26 @@ class App extends Component {
     };
 
     render() {
-        const { loading, componentToRender: ComponentToRender } = this.state;
-        if (loading) {
-            return (
-                <>
-                    <StatusBar barStyle="dark-content" />
-                    <Text>loading... </Text>
-                </>
-            );
-        }
-        return <ComponentToRender />;
+        const { page } = this.props;
+        const ComponentToRender = this.pages[page];
+
+        return (
+            <>
+                <StatusBar barStyle="dark-content" />
+                {ComponentToRender ? <ComponentToRender /> : <Text>loading... </Text>}
+            </>
+        );
     }
 }
 
+const mapStateToProps = ({ page }) => ({
+    page,
+});
+
+const ConnectedApp = connect(mapStateToProps, { updatePageState })(App);
+
 export default () => (
     <Provider store={store}>
-        <App />
+        <ConnectedApp />
     </Provider>
 );
