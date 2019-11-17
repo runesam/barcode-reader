@@ -2,15 +2,15 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { PureComponent } from 'react';
 
-import { updatePageState } from '../redux/actions';
+import { updatePageState, updateOrderState } from '../redux/actions';
 
 import MainComponent from './components/main.component';
 
 class Main extends PureComponent {
     static propTypes = {
+        promise: propTypes.bool.isRequired,
         updatePageState: propTypes.func.isRequired,
         order: propTypes.shape({}).isRequired,
-        promise: propTypes.shape({}).isRequired,
     };
 
     handleSubmit = ({ username, password }) => {
@@ -23,7 +23,11 @@ class Main extends PureComponent {
     };
 
     handleOpenBarcodeScanner = () => {
-        const { updatePageState: updatePageStateAction } = this.props;
+        const {
+            updatePageState: updatePageStateAction,
+            updateOrderState: updateOrderStateAction,
+        } = this.props;
+        updateOrderStateAction();
         updatePageStateAction('BarcodeScanner');
     };
 
@@ -49,4 +53,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { updatePageState })(Main);
+export default connect(mapStateToProps, { updatePageState, updateOrderState })(Main);

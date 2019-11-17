@@ -4,11 +4,11 @@ import { View } from 'react-native';
 
 import FormFieldComponent from './formField.component';
 
-const FieldsListComponent = ({ fields, parent }) => fields.map(field => (
+const FieldsListComponent = ({ promise, fields }) => fields.map(field => (
 	<View key={field.name}>
 		<FormFieldComponent
 			field={field}
-			parent={parent}
+			promise={promise}
 		/>
 	</View>
 ));

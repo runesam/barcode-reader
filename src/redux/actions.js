@@ -1,5 +1,6 @@
 const UPDATE_PAGE_STATE = 'UPDATE_PAGE_STATE';
 const UPDATE_ORDER_STATE = 'UPDATE_ORDER_STATE';
+const UPDATE_PROMISE_STATE = 'UPDATE_PROMISE_STATE';
 
 const updateOrderState = (payload) => ({
     payload,
@@ -11,9 +12,16 @@ const updatePageState = (payload) => ({
     type: UPDATE_PAGE_STATE,
 });
 
+const updatePromiseState = (payload) => ({
+    payload,
+    type: UPDATE_PROMISE_STATE,
+});
+
 export {
     updatePageState,
     updateOrderState,
-    UPDATE_ORDER_STATE,
+    updatePromiseState,
     UPDATE_PAGE_STATE,
+    UPDATE_ORDER_STATE,
+    UPDATE_PROMISE_STATE,
 }

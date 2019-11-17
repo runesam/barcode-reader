@@ -1,15 +1,8 @@
 import React from 'react';
 import { Field } from 'redux-form';
-import PropTypes from 'prop-types';
+import propTypes from 'prop-types';
 
 import TextFieldComponent from './textField.component';
-
-const getName = (name, parent) => {
-	if (parent) {
-		return `${parent}.${name}`;
-	}
-	return name;
-};
 
 const FormFieldComponent = (props) => {
 	const {
@@ -20,27 +13,23 @@ const FormFieldComponent = (props) => {
 			validators,
 			placeholder,
 		},
-		parent,
+		promise,
 	} = props;
 	return (
 		<Field
 			type={type}
-			editable={editable}
+			name={name}
 			validate={validators}
 			placeholder={placeholder}
-			name={getName(name, parent)}
 			component={TextFieldComponent}
+			editable={editable && !promise}
 		/>
 	);
 };
 
 FormFieldComponent.propTypes = {
-	parent: PropTypes.string,
-	field: PropTypes.shape({}).isRequired,
-};
-
-FormFieldComponent.defaultProps = {
-	parent: '',
+	promise: propTypes.bool.isRequired,
+	field: propTypes.shape({}).isRequired,
 };
 
 export default FormFieldComponent;

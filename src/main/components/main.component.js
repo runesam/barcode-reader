@@ -62,10 +62,16 @@ class MainComponent extends PureComponent {
 
         return (
             <KeyboardAvoidingView style={style.root} behavior="padding">
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <TouchableWithoutFeedback
+                    accessible={false}
+                    onPress={Keyboard.dismiss}
+                >
                     <View style={style.root}>
                         <View style={style.logoSection}>
-                            <TouchableHighlight onPress={handleOpenBarcodeScanner}>
+                            <TouchableHighlight
+                                disabled={promise}
+                                onPress={handleOpenBarcodeScanner}
+                            >
                                 <Image
                                     style={style.image}
                                     source={require('../../images/barcodeScanner.png')}

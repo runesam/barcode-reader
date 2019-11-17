@@ -22,10 +22,10 @@ const LoginForm = (props) => {
                 <FieldsListComponent fields={userLoginDefinition} />
             </View>
             <ButtonComponent
-                disabled={invalid}
-                loading={promise.general}
-                onClick={handleSubmit}
                 label="LOGIN"
+                loading={promise}
+                onClick={handleSubmit}
+                disabled={invalid || promise}
             />
             {Boolean(error) && (
                 <ErrorComponent error={error._error} />
@@ -37,7 +37,7 @@ const LoginForm = (props) => {
 LoginForm.propTypes = {
     handleSubmit: propTypes.func.isRequired,
     invalid: propTypes.bool.isRequired,
-    promise: propTypes.shape({}).isRequired,
+    promise: propTypes.bool.isRequired,
     error: propTypes.shape({}),
 };
 

@@ -45,7 +45,6 @@ export default class CameraScreen extends React.Component {
     }
 
     render() {
-        console.log(RNCamera.Constants.VideoQuality);
         return <View style={styles.container}>{this.renderCamera()}</View>;
     }
 }

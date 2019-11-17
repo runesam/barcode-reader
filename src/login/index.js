@@ -8,7 +8,7 @@ import LoginComponent from './components/login.component';
 
 class Login extends PureComponent {
     static propTypes = {
-        promise: propTypes.shape({}).isRequired,
+        promise: propTypes.bool.isRequired,
         loginUserAction: propTypes.func.isRequired,
     };
 

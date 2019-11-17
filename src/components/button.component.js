@@ -28,12 +28,13 @@ const styles = {
 
 const Button = (props) => {
     const {
-        onClick,
         label,
-        disabled,
-        loading,
         style,
+        loading,
+        onClick,
+        disabled,
     } = props;
+
     return (
         <TouchableOpacity
             onPress={onClick}

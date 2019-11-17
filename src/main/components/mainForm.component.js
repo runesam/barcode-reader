@@ -19,13 +19,16 @@ const MainForm = (props) => {
     return (
         <View onSubmit={handleSubmit}>
             <View>
-                <FieldsListComponent fields={deliveryStatusDefinition} />
+                <FieldsListComponent
+                    promise={promise}
+                    fields={deliveryStatusDefinition}
+                />
             </View>
             <ButtonComponent
-                disabled={invalid}
+                loading={promise}
                 onClick={handleSubmit}
                 label="Confirm Delivery"
-                loading={promise.general}
+                disabled={invalid || promise}
             />
             {Boolean(error) && (
                 <ErrorComponent error={error._error} />
@@ -36,9 +39,9 @@ const MainForm = (props) => {
 
 MainForm.propTypes = {
     invalid: propTypes.bool.isRequired,
+    promise: propTypes.bool.isRequired,
     error: propTypes.shape({}),
     handleSubmit: propTypes.func.isRequired,
-    promise: propTypes.shape({}).isRequired,
 };
 
 MainForm.defaultProps = {
@@ -47,4 +50,5 @@ MainForm.defaultProps = {
 
 export default reduxForm({
     form: 'main',
+    enableReinitialize: true,
 })(MainForm);
