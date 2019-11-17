@@ -3,15 +3,12 @@ import { Alert } from 'react-native';
 import {
     updatePageState,
     updateOrderState,
-    UPDATE_ORDER_STATE, updatePromiseState,
+    updatePromiseState,
+    UPDATE_ORDER_STATE,
+    SUBMIT_ORDER_STATUS,
 } from './actions';
 
-const baseURL = 'http:192.168.0.212:3000/orders/';
-
-const handleFetchOrderData = async ({ wayBill }) => {
-    const response = await fetch(`${baseURL}${wayBill}`);
-    return await response.json();
-};
+import { handleFetchOrderData, handleUpdateOrderData } from '../utils';
 
 const showAlert = (store, reason) => {
     Alert.alert(
@@ -28,6 +25,17 @@ const showAlert = (store, reason) => {
     );
 };
 
+const selectStatusAlert = () => {
+    Alert.alert(
+        'Status Needed',
+        'Please Select a Status of the order',
+        [
+            { text: 'Cancel', style: 'cancel' },
+        ],
+        { cancelable: true },
+    );
+};
+
 export default [
     store => next => action => {
         const { type, payload } = action;
@@ -36,7 +44,7 @@ export default [
                 if (payload && Object.keys(payload).length === 1) {
                     store.dispatch(updatePromiseState(true));
                     handleFetchOrderData(payload).then((res) => {
-                        if (res.errorMessage) {
+                        if (res && res.errorMessage) {
                             store.dispatch(updateOrderState());
                             showAlert(store, res.errorMessage);
                         } else {
@@ -46,6 +54,19 @@ export default [
                     }).catch(error => console.error(error));
                 }
                 return next(action);
+            }
+            case SUBMIT_ORDER_STATUS: {
+                if (!payload.orderStatus) {
+                    return selectStatusAlert();
+                }
+                return handleUpdateOrderData(payload).then((res) => {
+                    if (res && res.errorMessage) {
+                        store.dispatch(updateOrderState());
+                        showAlert(store, res.errorMessage);
+                    } else {
+                        store.dispatch(updateOrderState(res));
+                    }
+                }).catch(error => console.error(error));
             }
             default: next(action);
         }

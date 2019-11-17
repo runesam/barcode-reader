@@ -2,7 +2,12 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { PureComponent } from 'react';
 
-import { updatePageState, updateOrderState } from '../redux/actions';
+import {
+    updatePageState,
+    updateOrderState,
+    submitOrderStatus,
+    updateOrderStatusState,
+} from '../redux/actions';
 
 import MainComponent from './components/main.component';
 
@@ -13,8 +18,9 @@ class Main extends PureComponent {
         order: propTypes.shape({}).isRequired,
     };
 
-    handleSubmit = ({ username, password }) => {
-        console.log(username, password);
+    handleSubmit = () => {
+        const { order, orderStatus, submitOrderStatus: submitOrderStatusAction } = this.props;
+        submitOrderStatusAction({ ...order, orderStatus });
     };
 
     handleSignUp = () => {
@@ -31,26 +37,39 @@ class Main extends PureComponent {
         updatePageStateAction('BarcodeScanner');
     };
 
+    handleUpdateOrderStatusState = (value) => {
+        const { updateOrderStatusState: updateOrderStatusStateAction } = this.props;
+        updateOrderStatusStateAction(value);
+    };
+
     render() {
-        const { order, promise } = this.props;
+        const { order, promise, orderStatus } = this.props;
         return (
             <MainComponent
                 order={order}
                 promise={promise}
+                orderStatus={orderStatus}
                 handleSubmit={this.handleSubmit}
                 handleSignUp={this.handleSignUp}
                 handleOpenBarcodeScanner={this.handleOpenBarcodeScanner}
+                updateOrderStatusState={this.handleUpdateOrderStatusState}
             />
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    const { order, promise } = state;
+    const { order, promise, orderStatus } = state;
     return {
         order,
         promise,
+        orderStatus,
     };
 };
 
-export default connect(mapStateToProps, { updatePageState, updateOrderState })(Main);
+export default connect(mapStateToProps, {
+    updatePageState,
+    updateOrderState,
+    submitOrderStatus,
+    updateOrderStatusState,
+})(Main);

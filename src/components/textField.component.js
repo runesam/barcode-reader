@@ -9,7 +9,7 @@ const style = {
     view: {
         borderRadius: 8,
         borderWidth: 1,
-        borderColor: colors.steel,
+        borderColor: colors.black,
         height: 56,
     },
     textInput: {
@@ -65,7 +65,7 @@ class TextFieldComponent extends PureComponent {
                     placeholder={placeholder}
                     selectionColor={colors.fresh}
                     onChangeText={input.onChange}
-                    placeholderTextColor={colors.frost}
+                    placeholderTextColor={colors.charcoal}
                     secureTextEntry={type === 'password'}
                 />
                 {Boolean(touched && error) && <Text style={style.error}>{error}</Text>}

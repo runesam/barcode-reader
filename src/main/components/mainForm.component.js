@@ -27,7 +27,7 @@ const MainForm = (props) => {
             <ButtonComponent
                 loading={promise}
                 onClick={handleSubmit}
-                label="Confirm Delivery"
+                label="Update Order Status"
                 disabled={invalid || promise}
             />
             {Boolean(error) && (
