@@ -12,7 +12,13 @@ const initialStates = {
     page: null,
     promise: false,
     orderStatus: null,
-    order: { wayBill: '', customerName: '', phoneNumber: '' },
+    order: {
+        orderId: '',
+        wayBill: '',
+        customerName: '',
+        phoneNumber: '',
+        deliveryStatus: '',
+    },
 };
 
 const page = (state = initialStates.page, action) => {

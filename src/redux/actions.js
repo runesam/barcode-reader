@@ -1,8 +1,20 @@
+const USER_LOGIN = 'USER_LOGIN';
+const USER_LOGOUT = 'USER_LOGOUT';
+
 const UPDATE_PAGE_STATE = 'UPDATE_PAGE_STATE';
 const UPDATE_ORDER_STATE = 'UPDATE_ORDER_STATE';
 const SUBMIT_ORDER_STATUS = 'SUBMIT_ORDER_STATUS';
 const UPDATE_PROMISE_STATE = 'UPDATE_PROMISE_STATE';
 const UPDATE_ORDER_STATUS_STATE = 'UPDATE_ORDER_STATUS_STATE';
+
+const userLogin = (payload) => ({
+    payload,
+    type: USER_LOGIN,
+});
+
+const userLogout = () => ({
+    type: USER_LOGOUT,
+});
 
 const updateOrderState = (payload) => ({
     payload,
@@ -30,6 +42,11 @@ const submitOrderStatus = (payload) => ({
 });
 
 export {
+    userLogin,
+    userLogout,
+    USER_LOGIN,
+    USER_LOGOUT,
+
     updatePageState,
     updateOrderState,
     submitOrderStatus,

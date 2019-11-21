@@ -20,4 +20,10 @@ export default [
         name: 'phoneNumber',
         placeholder: 'Phone Number',
     },
+    {
+        type: 'text',
+        editable: false,
+        name: 'deliveryStatus',
+        placeholder: 'Delivery Status',
+    },
 ];

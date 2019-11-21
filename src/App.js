@@ -6,8 +6,9 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 import Main from './main';
 import Login from './login';
-import BarcodeScanner from './barcodeScanner';
 import store from './redux/store';
+import { setAuthHeader } from './utils';
+import BarcodeScanner from './barcodeScanner';
 import { updatePageState } from './redux/actions';
 
 class App extends Component {
@@ -29,15 +30,16 @@ class App extends Component {
             Main,
             Login,
             BarcodeScanner,
-        }
+        };
     }
 
     retrieveAuthToken = async () => {
         const { updatePageState: updatePageStateAction } = this.props;
         try {
-            const value = await AsyncStorage.getItem('authToken');
-            if (!value) {
+            const value = await AsyncStorage.getItem('auth');
+            if (value) {
                 updatePageStateAction('Main');
+                setAuthHeader(JSON.parse(value));
             } else {
                 updatePageStateAction('Login');
             }

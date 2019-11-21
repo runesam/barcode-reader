@@ -19,7 +19,7 @@ const LoginForm = (props) => {
     return (
         <View onSubmit={handleSubmit}>
             <View>
-                <FieldsListComponent fields={userLoginDefinition} />
+                <FieldsListComponent promise={promise} fields={userLoginDefinition} />
             </View>
             <ButtonComponent
                 label="LOGIN"

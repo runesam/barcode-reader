@@ -28,7 +28,7 @@ const style = {
         resizeMode: 'contain',
     },
     formSection: {
-        flex: 2,
+        flex: 4,
         padding: 15,
     },
     links: {

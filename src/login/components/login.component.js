@@ -47,7 +47,7 @@ const style = {
 };
 
 const LoginComponent = (props) => {
-    const { handleSubmit, handleSignUp, promise } = props;
+    const { promise, handleSubmit, handleForgotPassword } = props;
     return (
         <KeyboardAvoidingView style={style.root} behavior="padding">
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -59,22 +59,17 @@ const LoginComponent = (props) => {
                             promise={promise}
                             onSubmit={handleSubmit}
                             initialValues={{
-                                username: 'meter_data_prices_disagg@example.com',
-                                password: 'Freshtest!',
+                                username: 'rapkid',
+                                password: 'Arf127//'
                             }}
                         />
                     </View>
                 </View>
             </TouchableWithoutFeedback>
             <View style={style.links}>
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={handleForgotPassword}>
                     <Text style={style.linkText1}>
                         Forgot your password
-                    </Text>
-                </TouchableWithoutFeedback>
-                <TouchableWithoutFeedback onPress={handleSignUp}>
-                    <Text style={style.linkText2}>
-                        {'You don\'t have an account yet?'}
                     </Text>
                 </TouchableWithoutFeedback>
             </View>

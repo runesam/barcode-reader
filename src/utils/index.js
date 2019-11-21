@@ -1,5 +1,8 @@
-const baseURL = 'http:192.168.0.212:3000/orders/';
+import { showAlert } from '../utils/alert';
+import { userLogout } from '../redux/actions';
+
 const commonHeaders = {};
+const baseURL = 'http://eticaret-arab.com/panel/A125-Js/';
 
 const getBackGroundColor = (orderStatus) => {
     switch (orderStatus) {
@@ -11,12 +14,36 @@ const getBackGroundColor = (orderStatus) => {
     }
 };
 
-const handleFetchOrderData = async ({ wayBill }) => {
+const setAuthHeader = ({ username, password }) => {
+    const usernamePassword = `${username}:${password}`;
+    commonHeaders['Authorization'] = `Basic ${btoa(usernamePassword)}`;
+};
+
+const removeAuthHeader = () => {
+    delete commonHeaders['Authorization'];
+};
+
+const encodeBody = (body) => {
+    let formBody = [];
+    for (let property in body) {
+        if (body.hasOwnProperty(property)) {
+            let encodedKey = encodeURIComponent(property);
+            let encodedValue = encodeURIComponent(body[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+    }
+    formBody = formBody.join("&");
+    return formBody;
+};
+
+const handleUserLogin = async (body) => {
     try {
-        const response = await fetch(`${baseURL}${wayBill}`, {
-            method: 'GET',
-            mode: 'cors',
-            headers: { ...commonHeaders },
+        const response = await fetch(`${baseURL}checkUser.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: encodeBody(body),
         });
         return await response.json();
     } catch (e) {
@@ -24,19 +51,48 @@ const handleFetchOrderData = async ({ wayBill }) => {
     }
 };
 
-const handleUpdateOrderData = async (payload) => {
+const handleFetchOrderData = async ({ wayBill }, store) => {
     try {
-        const response = await fetch(baseURL, {
-            method: 'POST',
+        const response = await fetch(`${baseURL}wayBill.php?wayBill=${wayBill}`, {
+            method: 'GET',
             mode: 'cors',
+            headers: { ...commonHeaders },
+        });
+
+        if (response.status === 401) {
+            store.dispatch(userLogout());
+        } else {
+            return await response.json();
+        }
+    } catch (e) {
+        console.error(e);
+    }
+};
+
+const handleUpdateOrderData = async ({ orderId, orderStatus }, store) => {
+    const body = {
+        orderId,
+        deliveryStatus: orderStatus,
+    };
+
+    try {
+        const response = await fetch(`${baseURL}updateOrder.php`, {
+            method: 'POST',
             headers: {
                 ...commonHeaders,
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
+                // 'Content-Type': 'application/json'
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: JSON.stringify(payload)
+            body: encodeBody(body),
         });
-        return await response.json();
+
+        if (response.status === 401) {
+            store.dispatch(userLogout());
+        } else if (response.status === 404) {
+            response.json().then(res => showAlert(store, res.message));
+        } else {
+            return await response.json();
+        }
     } catch (e) {
         console.error(e);
     }
@@ -44,6 +100,9 @@ const handleUpdateOrderData = async (payload) => {
 
 export {
     commonHeaders,
+    setAuthHeader,
+    handleUserLogin,
+    removeAuthHeader,
     getBackGroundColor,
     handleFetchOrderData,
     handleUpdateOrderData,

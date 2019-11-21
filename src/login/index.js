@@ -2,22 +2,22 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { PureComponent } from 'react';
 
-// import { loginUser } from 'actions';
+import { userLogin } from '../redux/actions';
 
 import LoginComponent from './components/login.component';
 
 class Login extends PureComponent {
     static propTypes = {
         promise: propTypes.bool.isRequired,
-        loginUserAction: propTypes.func.isRequired,
+        userLogin: propTypes.func.isRequired,
     };
 
-    handleSubmit = ({ username, password }) => {
-        const { loginUserAction } = this.props;
-        loginUserAction(username, password);
+    handleSubmit = (data) => {
+        const { userLogin: loginUserAction } = this.props;
+        loginUserAction(data);
     };
 
-    handleSignUp = () => {
+    handleForgotPassword = () => {
         const { navigation } = this.props;
         return navigation.navigate('SignUp');
     };
@@ -28,7 +28,7 @@ class Login extends PureComponent {
             <LoginComponent
                 promise={promise}
                 handleSubmit={this.handleSubmit}
-                handleSignUp={this.handleSignUp}
+                handleForgotPassword={this.handleForgotPassword}
             />
         );
     }
@@ -41,4 +41,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { loginUserAction: () => ({ type: 'TEST' }) })(Login);
+export default connect(mapStateToProps, { userLogin })(Login);
