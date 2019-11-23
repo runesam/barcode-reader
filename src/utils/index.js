@@ -1,5 +1,11 @@
+import { encode } from 'base-64'
+
 import { showAlert } from '../utils/alert';
 import { userLogout } from '../redux/actions';
+
+if (!global.btoa) {
+    global.btoa = encode;
+}
 
 const commonHeaders = {};
 const baseURL = 'http://eticaret-arab.com/panel/A125-Js/';
@@ -43,6 +49,7 @@ const handleUserLogin = async (body) => {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
+            mode: 'cors',
             body: encodeBody(body),
         });
         return await response.json();
@@ -78,6 +85,7 @@ const handleUpdateOrderData = async ({ orderId, orderStatus }, store) => {
     try {
         const response = await fetch(`${baseURL}updateOrder.php`, {
             method: 'POST',
+            mode: 'cors',
             headers: {
                 ...commonHeaders,
                 // 'Content-Type': 'application/json'

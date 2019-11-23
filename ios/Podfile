@@ -35,6 +35,7 @@ target 'BarcodeReader' do
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
   use_native_modules!
+
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
 end
