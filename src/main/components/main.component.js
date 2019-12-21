@@ -12,6 +12,7 @@ import { colors, fonts } from '../../themes';
 import { getBackGroundColor } from '../../utils';
 import MainFormComponent from './mainForm.component';
 import BottomSwitcherComponent from './bottomSwitcher.component';
+import ModalExample from '../../components/modal.component';
 
 const style = {
     root: {
@@ -55,18 +56,21 @@ const style = {
 class MainComponent extends PureComponent {
     render() {
         const {
+            modal,
             order,
             promise,
-            orderStatus,
             handleSubmit,
+            orderStatus,
             updateOrderStatusState,
             handleOpenBarcodeScanner,
         } = this.props;
 
         const backgroundColor = getBackGroundColor(orderStatus);
 
-        return (
+        return [
+            <ModalExample key="ModalExample" />,
             <KeyboardAvoidingView
+                key="main"
                 behavior="padding"
                 style={{ ...style.root, backgroundColor }}
             >
@@ -101,7 +105,7 @@ class MainComponent extends PureComponent {
                     </View>
                 </TouchableWithoutFeedback>
             </KeyboardAvoidingView>
-        );
+        ];
     }
 }
 

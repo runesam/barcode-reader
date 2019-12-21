@@ -10,6 +10,7 @@ import {
 import { colors, fonts } from '../../themes';
 
 import LoginFormComponent from './loginForm.component';
+import ModalExample from '../../components/modal.component';
 
 const style = {
     root: {
@@ -48,8 +49,8 @@ const style = {
 
 const LoginComponent = (props) => {
     const { promise, handleSubmit, handleForgotPassword } = props;
-    return (
-        <KeyboardAvoidingView style={style.root} behavior="padding">
+    return [
+        <KeyboardAvoidingView style={style.root} behavior="padding" key="login">
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <View style={style.root}>
                     <View style={style.logoSection}>
@@ -59,7 +60,7 @@ const LoginComponent = (props) => {
                             promise={promise}
                             onSubmit={handleSubmit}
                             initialValues={{
-                                username: 'rapkid',
+                                username: 'rapkid2',
                                 password: 'Arf127//'
                             }}
                         />
@@ -73,8 +74,9 @@ const LoginComponent = (props) => {
                     </Text>
                 </TouchableWithoutFeedback>
             </View>
-        </KeyboardAvoidingView>
-    );
+        </KeyboardAvoidingView>,
+        <ModalExample key="ModalExample" />,
+    ];
 };
 
 export default LoginComponent;

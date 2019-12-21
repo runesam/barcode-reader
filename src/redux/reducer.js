@@ -2,6 +2,8 @@ import { combineReducers } from 'redux';
 import { reducer as form } from 'redux-form';
 
 import {
+    OPEN_MODAL,
+    CLOSE_MODAL,
     UPDATE_PAGE_STATE,
     UPDATE_ORDER_STATE,
     UPDATE_PROMISE_STATE,
@@ -19,6 +21,9 @@ const initialStates = {
         phoneNumber: '',
         deliveryStatus: '',
     },
+    model: {
+        show: false,
+    }
 };
 
 const page = (state = initialStates.page, action) => {
@@ -56,10 +61,22 @@ const orderStatus = (state = initialStates.orderStatus, action) => {
     return state;
 };
 
+const modal = (state = initialStates.model, action) => {
+    const { type, payload } = action;
+    if (type === OPEN_MODAL) {
+        return { show: true, ...payload };
+    }
+    if (type === CLOSE_MODAL) {
+        return initialStates.model;
+    }
+    return state;
+};
+
 export default combineReducers({
     form,
     page,
     order,
+    modal,
     promise,
     orderStatus,
 });

@@ -1,7 +1,9 @@
 import { encode } from 'base-64'
 
-import { showAlert } from '../utils/alert';
-import { userLogout } from '../redux/actions';
+import {
+    openModal,
+    userLogout,
+} from '../redux/actions';
 
 if (!global.btoa) {
     global.btoa = encode;
@@ -52,7 +54,8 @@ const handleUserLogin = async (body) => {
             mode: 'cors',
             body: encodeBody(body),
         });
-        return await response.json();
+        const data = await response.json();
+        return Promise.resolve({ status: response.status, ...data });
     } catch (e) {
         console.error(e);
     }
@@ -69,7 +72,8 @@ const handleFetchOrderData = async ({ wayBill }, store) => {
         if (response.status === 401) {
             store.dispatch(userLogout());
         } else {
-            return await response.json();
+            const data = await response.json();
+            return Promise.resolve({ status: response.status, ...data });
         }
     } catch (e) {
         console.error(e);
@@ -97,9 +101,19 @@ const handleUpdateOrderData = async ({ orderId, orderStatus }, store) => {
         if (response.status === 401) {
             store.dispatch(userLogout());
         } else if (response.status === 404) {
-            response.json().then(res => showAlert(store, res.message));
+            response.json().then(res => store.dispatch(openModal({
+                title: 'Error',
+                message: res.message,
+                backgroundColor: '#ff0000',
+                image: require('../images/error.png'),
+                actions: [
+                    { text: 'Scan Again', methods: [{ name: 'updateOrderState' }, { name: 'updatePageState', args: ['BarcodeScanner']}]},
+                    { text: 'Close', methods: [{ name: 'updateOrderState' }, { name: 'closeModal' }]},
+                ],
+            })));
         } else {
-            return await response.json();
+            const data = await response.json();
+            return Promise.resolve({ status: response.status, ...data });
         }
     } catch (e) {
         console.error(e);
